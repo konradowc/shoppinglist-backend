@@ -1,0 +1,13 @@
+9/22: -
+
+9/29: Conducted research on how project could be created (e.g. the recipe API: Spoonacular or Edamam). Additionally, did limited market research to determine what other competitors are in the space.
+
+10/6: Conducted interviews with regular people to determine how useful an app like this could be. Determined it would not be very useful, creating need to reevaluate.
+
+10/13: Definitively decided on senior project to be the Grocery/parts App, with certain changes based on the feedback provided from the interviews. Created updated project outline. Wrote user stories.
+
+10/20: Created more user stories, and created the GitHub.
+
+10/27: Did limited research on tech stack. Updated certain user stories to include "so that" clause. Uploaded initial documents to GitHub.
+
+11/3: Did research on SWE in general (e.g. architecture patterns), as well as on databases. Decided on PostgreSQL for project, due to determining that the data will be structured and will benefit from allowing joins. Created Jira.
