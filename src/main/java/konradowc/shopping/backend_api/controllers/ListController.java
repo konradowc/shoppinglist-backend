@@ -1,7 +1,9 @@
 package konradowc.shopping.backend_api.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,8 +18,9 @@ public class ListController {
         this.listService = listService;
     }
 
+    @CrossOrigin(origins = "http://localhost:5173") // TO-DO: temporary
     @PostMapping("/list")
-    ResponseEntity<Void> postList(@RequestParam(defaultValue = "null") String listName) {
+    ResponseEntity<Void> postList(@RequestBody String listName) {
         if(listService.createNewList(listName)) {
             return ResponseEntity.ok().build();
         }
