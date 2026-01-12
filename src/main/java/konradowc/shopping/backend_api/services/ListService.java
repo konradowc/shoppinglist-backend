@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
+import konradowc.shopping.backend_api.dtos.ListDTO;
 import konradowc.shopping.backend_api.models.ListModel;
 import konradowc.shopping.backend_api.repositories.ListRepo;
 
@@ -16,17 +17,16 @@ public class ListService {
         this.repo = repo;
     }
 
-    public boolean createNewList(String listName) {
+    public boolean createList(ListDTO listDTO) {
         ListModel list = new ListModel();
-        list.setList_name(listName);
-        list.setContents(new ArrayList<String>());
-        //newList.setOwner_id(); // TO-DO
+        list.setList_name(listDTO.list_name());
+        list.setContents(listDTO.contents());
+        list.setOwner_id(1); // TO-DO
         // editor list ids TO-DO
 
         repo.save(list);
-            
 
-        System.out.println("new list: " + listName);
+        System.out.println("new list: " + list.getList_name());
         return true;
     }
 
