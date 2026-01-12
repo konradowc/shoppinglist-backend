@@ -1,0 +1,22 @@
+package konradowc.shopping.backend_api.models;
+
+import java.util.List;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+public class ListModel {
+    
+    @Id
+    private String list_name;
+
+    private long owner_id;
+    //private List<long> editors_id_list; // TO-DO
+
+    @ElementCollection
+    private List<String> contents;
+}
