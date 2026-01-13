@@ -12,8 +12,10 @@ import lombok.Setter;
 public class ListModel {
     
     @Id
-    private String list_name;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
+    private String list_name;
     private long owner_id;
     //private List<long> editors_id_list; // TO-DO
 
