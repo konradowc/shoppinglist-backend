@@ -1,15 +1,9 @@
 package konradowc.shopping.backend_api.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import konradowc.shopping.backend_api.dtos.List.DeleteListDTO;
-import konradowc.shopping.backend_api.dtos.List.PostListDTO;
-import konradowc.shopping.backend_api.models.ListModel;
+import konradowc.shopping.backend_api.dtos.List.*;
 import konradowc.shopping.backend_api.services.ListService;
 
 @RestController
@@ -17,34 +11,39 @@ import konradowc.shopping.backend_api.services.ListService;
 public class ListController {
 
     private final ListService listService;
-    
-    public ListController(ListService listService) {
-        this.listService = listService;
+    public ListController(ListService listService) { this.listService = listService; }
+
+    ///
+    /// 
+    /// 
+
+    @GetMapping("/list/{id}")
+    ResponseEntity<ListResponse> getList(@PathVariable long id) {
+        ListResponse list = listService.getList(id);
+        return ResponseEntity.ok(list); // TO-DO: could be not ok?
     }
 
     @PostMapping("/list")
-    ResponseEntity<Void> postList(@RequestBody PostListDTO dto) {
-        System.out.println("our DTO we get: " + dto.toString());
-
-        long listId = listService.createList(dto);
-        if(listId != -1) { // TO-DO: no mechanism exists to return -1
-            return ResponseEntity.ok().build();
-        }
-        else {
-            return ResponseEntity.badRequest().build();
-        }
+    ResponseEntity<ListResponse> postList(@RequestBody CreateListRequest req) {
+        ListResponse list = listService.createList(req);
+        return ResponseEntity.ok(list); // TO-DO: ^
     }
 
-    @DeleteMapping
-    ResponseEntity<Void> deleteList(@RequestBody DeleteListDTO dto) {
-        System.out.println("our DTO we get: " + dto.toString());
+    @PatchMapping("/list/{id}/contents") 
+    ResponseEntity<ListResponse> patchListContents(@PathVariable long id, @RequestBody UpdateListContentsRequest req) {
+        ListResponse list = listService.updateListContents(id, req);
+        return ResponseEntity.ok(list); // TO-DO: ^
+    }
 
-        long listId = listService.deleteList(dto);
-        if(listId != -1) { // TO-DO: no mechanism exists to return -1
-            return ResponseEntity.ok().build();
-        }
-        else {
-            return ResponseEntity.badRequest().build();
-        }
+    @PatchMapping("/list/{id}/metadata") 
+    ResponseEntity<ListResponse> patchListMetadata(@PathVariable long id, @RequestBody UpdateListMetadataRequest req) {
+        ListResponse list = listService.updateListMetadata(id, req);
+        return ResponseEntity.ok(list); // TO-DO: ^
+    }
+
+    @DeleteMapping("/list/{id}")
+    ResponseEntity<Void> deleteList(@PathVariable long id) {
+        listService.deleteList(id);
+        return ResponseEntity.ok().build(); // TO-DO: ^
     }
 }
