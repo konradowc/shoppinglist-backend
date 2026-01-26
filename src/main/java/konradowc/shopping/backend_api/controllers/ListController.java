@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import konradowc.shopping.backend_api.dtos.List.*;
 import konradowc.shopping.backend_api.services.ListService;
 
+
+@CrossOrigin(origins = "http://localhost:5173",  // TO-DO: temporary
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH})
 @RestController
-@CrossOrigin(origins = "http://localhost:5173") // TO-DO: temporary
 public class ListController {
 
     private final ListService listService;
