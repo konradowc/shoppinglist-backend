@@ -1,5 +1,7 @@
 package konradowc.shopping.backend_api.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import konradowc.shopping.backend_api.dtos.List.*;
@@ -56,6 +58,11 @@ public class ListService {
     public long deleteList(long id) {
         repo.deleteById(String.valueOf(id));
         return id; // TO-DO: return something else?
+    }
+
+    public ListofListsResponse getListsByUser(long userid) {
+        Long[] ids = repo.findListIdsByUser(userid);
+        return new ListofListsResponse(ids);
     }
 
     ///

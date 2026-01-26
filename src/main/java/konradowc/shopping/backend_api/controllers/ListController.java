@@ -48,4 +48,10 @@ public class ListController {
         listService.deleteList(id);
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
+
+    @GetMapping("/user/{userid}/lists") // TO-DO: what about this
+    ResponseEntity<ListofListsResponse> getListsByUser(@PathVariable long userid) {
+        ListofListsResponse ids = listService.getListsByUser(userid);
+        return ResponseEntity.ok(ids);
+    }
 }
