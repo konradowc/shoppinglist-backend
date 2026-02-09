@@ -11,7 +11,7 @@ import konradowc.shopping.backend_api.models.ListModel;
 @Repository
 public interface ListRepo extends JpaRepository<ListModel, String> {
 
-    @Query("SELECT l.id FROM ListModel l WHERE l.owner_id = :userid")
+    @Query("SELECT l.id FROM ListModel l WHERE l.owner_id = :userid") //update for not just owner
     Long[] findListIdsByUser(@Param("userid") long userid);
 
 }

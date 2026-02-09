@@ -22,7 +22,7 @@ public class ListController {
     @GetMapping("/list/{id}")
     ResponseEntity<ListResponse> getList(@PathVariable long id) {
         ListResponse list = listService.getList(id);
-        return ResponseEntity.ok(list); // TO-DO: could be not ok?
+        return ResponseEntity.ok(list); // TO-DO: account for error handling in future
     }
 
     @PostMapping("/list")
@@ -47,11 +47,5 @@ public class ListController {
     ResponseEntity<Void> deleteList(@PathVariable long id) {
         listService.deleteList(id);
         return ResponseEntity.ok().build(); // TO-DO: ^
-    }
-
-    @GetMapping("/user/{userid}/lists") // TO-DO: what about this
-    ResponseEntity<ListofListsResponse> getListsByUser(@PathVariable long userid) {
-        ListofListsResponse ids = listService.getListsByUser(userid);
-        return ResponseEntity.ok(ids);
     }
 }

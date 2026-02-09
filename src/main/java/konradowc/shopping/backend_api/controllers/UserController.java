@@ -3,8 +3,10 @@ package konradowc.shopping.backend_api.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import konradowc.shopping.backend_api.dtos.List.ListofListsResponse;
 import konradowc.shopping.backend_api.dtos.User.*;
 import konradowc.shopping.backend_api.services.UserService;
+import konradowc.shopping.backend_api.services.ListService;
 
 
 @CrossOrigin(origins = "http://localhost:5173",  // TO-DO: temporary
@@ -13,7 +15,10 @@ import konradowc.shopping.backend_api.services.UserService;
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService) { this.userService = userService; }
+    private final ListService listService;
+    public UserController(UserService userService, ListService listService) { this.userService = userService;
+                                                                              this.listService = listService;
+                                                                            }
 
     ///
     /// 
@@ -29,5 +34,11 @@ public class UserController {
     ResponseEntity<Void> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build(); // TO-DO: ^
+    }
+
+    @GetMapping("/user/{userid}/lists")
+    ResponseEntity<ListofListsResponse> getListsByUser(@PathVariable long userid) {
+        ListofListsResponse ids = listService.getListsByUser(userid);
+        return ResponseEntity.ok(ids);
     }
 }

@@ -28,7 +28,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.30'				// for Lombok (automatic getters & setters)
     annotationProcessor 'org.projectlombok:lombok:1.18.30'		//
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0" // for OpenAPI (Swagger)
-
+	implementation 'org.passay:passay:1.6.6' // for random password generation
 }
 
 tasks.named('test') {

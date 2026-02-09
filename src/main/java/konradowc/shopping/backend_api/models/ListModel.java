@@ -19,12 +19,14 @@ import lombok.Setter;
 public class ListModel {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // begins at 1
     private long id;
 
     private String list_name;
     private long owner_id;
-    //private List<long> editors_id_list; // TO-DO
+
+    @ElementCollection
+    private List<Long> editor_ids;
 
     @ElementCollection
     private List<String> contents;

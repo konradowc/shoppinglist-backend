@@ -6,7 +6,8 @@ public record ListResponse(
 
     long list_id,
     String list_name,
-    List<String> contents,
-    long owner_id
+    long owner_id,
+    List<Long> editor_ids,
+    List<String> contents
 
 ) {}
