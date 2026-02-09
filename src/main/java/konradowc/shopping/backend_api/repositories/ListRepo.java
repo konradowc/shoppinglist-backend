@@ -11,7 +11,7 @@ import konradowc.shopping.backend_api.models.ListModel;
 @Repository
 public interface ListRepo extends JpaRepository<ListModel, String> {
 
-    @Query("SELECT l.id FROM ListModel l WHERE :userid MEMBER OF l.editorIds")
+    @Query("SELECT l.id FROM ListModel l WHERE :userid MEMBER OF l.editor_ids")
     Long[] findListIdsByUser(@Param("userid") long userid);
 
 }
