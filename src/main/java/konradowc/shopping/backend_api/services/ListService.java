@@ -60,7 +60,7 @@ public class ListService {
     }
 
     public long deleteList(long id) {
-        repo.deleteById(String.valueOf(id));
+        repo.deleteById(id);
         return id; // TO-DO: return something else?
     }
 
@@ -83,7 +83,7 @@ public class ListService {
     }
 
     private ListModel getListModelById(long id) {
-        return repo.findById(String.valueOf(id))
+        return repo.findById(id)
                     .orElseThrow(() -> new RuntimeException("List " + id + " not found"));
     }
 }

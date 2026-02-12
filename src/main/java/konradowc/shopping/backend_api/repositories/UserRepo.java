@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import konradowc.shopping.backend_api.models.UserModel;
 
 @Repository
-public interface UserRepo extends JpaRepository<UserModel, String> {
+public interface UserRepo extends JpaRepository<UserModel, Long> {
 }

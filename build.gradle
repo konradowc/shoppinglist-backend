@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	developmentOnly 'org.springframework.boot:spring-boot-devtools' // for auto-restarts (like Vite)
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // for NotBlank
@@ -34,3 +35,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+/*
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+*/ // this didn't work

@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public long deleteUser(long id) {
-        repo.deleteById(String.valueOf(id));
+        repo.deleteById(id);
         return id; // TO-DO: return something else?
     }
 

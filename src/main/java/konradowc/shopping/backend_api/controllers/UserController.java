@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    ResponseEntity<Void> deleteUser(@PathVariable long id) {
+    ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
 
-    @GetMapping("/user/{userid}/lists")
-    ResponseEntity<ListofListsResponse> getListsByUser(@PathVariable long userid) {
+    @GetMapping("/user/{userId}/lists")
+    ResponseEntity<ListofListsResponse> getListsByUser(@PathVariable("userId") Long userid) {
         ListofListsResponse ids = listService.getListsByUser(userid);
         return ResponseEntity.ok(ids);
     }

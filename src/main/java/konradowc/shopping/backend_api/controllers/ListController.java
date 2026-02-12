@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import konradowc.shopping.backend_api.dtos.List.*;
 import konradowc.shopping.backend_api.services.ListService;
+import konradowc.shopping.backend_api.services.SseService;
 
 
 @CrossOrigin(origins = "http://localhost:5173",  // TO-DO: temporary
@@ -13,14 +14,15 @@ import konradowc.shopping.backend_api.services.ListService;
 public class ListController {
 
     private final ListService listService;
-    public ListController(ListService listService) { this.listService = listService; }
+    private final SseService sseService;
+    public ListController(ListService listService, SseService sseService) { this.listService = listService; this.sseService = sseService; }
 
     ///
     /// 
     /// 
 
     @GetMapping("/list/{id}")
-    ResponseEntity<ListResponse> getList(@PathVariable long id) {
+    ResponseEntity<ListResponse> getList(@PathVariable("id") Long id) {
         ListResponse list = listService.getList(id);
         return ResponseEntity.ok(list); // TO-DO: account for error handling in future
     }
@@ -32,19 +34,23 @@ public class ListController {
     }
 
     @PatchMapping("/list/{id}/contents") 
-    ResponseEntity<ListResponse> patchListContents(@PathVariable long id, @RequestBody UpdateListContentsRequest req) {
+    ResponseEntity<ListResponse> patchListContents(@PathVariable("id") Long id, @RequestBody UpdateListContentsRequest req) {
+        
+        //TEMP
+        sseService.propogateUpdates(id);
+
         ListResponse list = listService.updateListContents(id, req);
         return ResponseEntity.ok(list); // TO-DO: ^
     }
 
     @PatchMapping("/list/{id}/metadata") 
-    ResponseEntity<ListResponse> patchListMetadata(@PathVariable long id, @RequestBody UpdateListMetadataRequest req) {
+    ResponseEntity<ListResponse> patchListMetadata(@PathVariable("id") Long id, @RequestBody UpdateListMetadataRequest req) {
         ListResponse list = listService.updateListMetadata(id, req);
         return ResponseEntity.ok(list); // TO-DO: ^
     }
 
     @DeleteMapping("/list/{id}")
-    ResponseEntity<Void> deleteList(@PathVariable long id) {
+    ResponseEntity<Void> deleteList(@PathVariable("id") Long id) {
         listService.deleteList(id);
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
