@@ -33,7 +33,7 @@ public class SseService {
         if(singleList == null) return; // not an error, just no clients subscribed
 
         for(SseEmitter emitter : singleList.values()) {
-            String name = "test: " + listId;
+            String name = String.valueOf(listId);
             String data = "data";
             emitUpdate(emitter, name, data);
         }
@@ -48,7 +48,7 @@ public class SseService {
             innerMap.put(userId, emitter);
         }
 
-        propogateUpdates(Long.valueOf(1));
+        propogateUpdates(Long.valueOf(listId));
     }
 
     private void removeSseConnection(Long userId, Long listId) {
