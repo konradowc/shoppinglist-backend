@@ -5,7 +5,7 @@ import java.util.List;
 public record UpdateListMetadataRequest(
 
     String list_name,
-    long owner_id,
+    Long owner_id,
     List<Long> editor_ids
 
 ) {}

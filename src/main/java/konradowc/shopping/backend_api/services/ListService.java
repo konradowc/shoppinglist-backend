@@ -47,10 +47,10 @@ public class ListService {
     public ListResponse updateListMetadata(long id, UpdateListMetadataRequest req) {
         ListModel list = getListModelById(id);
 
-        System.out.println("updating metadata // name: " + req.list_name() + " ownerid: " + req.owner_id());
+        //System.out.println("updating metadata // name: " + req.list_name() + " ownerid: " + req.owner_id());
         if(req.list_name() != null)
             list.setList_name(req.list_name());
-        if(req.owner_id() != -1) // MAYBE-TO-DO: change in future?
+        if(req.owner_id() != null)
             list.setOwner_id(req.owner_id());
         if(req.editor_ids() != null)
             list.setEditor_ids(req.editor_ids());
@@ -61,7 +61,7 @@ public class ListService {
 
     public long deleteList(long id) {
         repo.deleteById(id);
-        return id; // TO-DO: return something else?
+        return id; // return something else?
     }
 
     public ListofListsResponse getListsByUser(long userid) {

@@ -16,6 +16,8 @@ public class SseService {
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
+    //private long sseIdCounter = 0; // maybe in future
+
     public SseEmitter createNewSseConnection(Long userId, Long listId) {
         SseEmitter emitter = new SseEmitter(Long.valueOf(1000 * 60 * 60 * 12)); // timeout 12 hours
         addSseConnection(userId, listId, emitter);
