@@ -4,6 +4,7 @@ import java.util.List;
 
 public record UpdateListContentsRequest (
 
-    List<String> contents_to_add
+    List<String> content_to_add,
+    List<Long> item_ids_to_remove
 
 ) {}

@@ -1,10 +1,12 @@
 package konradowc.shopping.backend_api.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import konradowc.shopping.backend_api.dtos.List.*;
+import konradowc.shopping.backend_api.models.ItemModel;
 import konradowc.shopping.backend_api.models.ListModel;
 import konradowc.shopping.backend_api.repositories.ListRepo;
 
@@ -28,8 +30,8 @@ public class ListService {
         ListModel list = ListModel.builder()
                             .list_name(req.list_name())
                             .owner_id(req.owner_id())
-                            .editor_ids(List.of(req.owner_id())) // initially sets editors list to just owner (check here if error: immutable?)
-                            .contents(req.contents()).build();
+                            .editor_ids(List.of(req.owner_id()))
+                            .contents(createItemModelsFromStrings(req.contents())).build();
 
         ListModel model = repo.save(list);
         return listModelToResponse(model);
@@ -37,8 +39,19 @@ public class ListService {
 
     public ListResponse updateListContents(long id, UpdateListContentsRequest req) {
         ListModel list = getListModelById(id);
-        
-        list.getContents().addAll(req.contents_to_add());
+
+        // remove given ids
+        if(req.item_ids_to_remove() != null) {
+            for(Long itemId : req.item_ids_to_remove()) {
+                repo.deleteById(itemId);
+            }
+        }
+
+        // add given contents
+        if(req.content_to_add() != null) {
+            List<ItemModel> itemsToAdd = createItemModelsFromStrings(req.content_to_add());
+            list.getContents().addAll(itemsToAdd);
+        }
 
         ListModel model = repo.save(list);
         return listModelToResponse(model);
@@ -85,5 +98,16 @@ public class ListService {
     private ListModel getListModelById(long id) {
         return repo.findById(id)
                     .orElseThrow(() -> new RuntimeException("List " + id + " not found"));
+    }
+
+    private List<ItemModel> createItemModelsFromStrings(List<String> itemStrings) {
+        List<ItemModel> items = new ArrayList<>();
+        for(String itemName : itemStrings) {
+            items.add(ItemModel.builder()
+                                        .itemName(itemName)
+                                        .expandable(false).build()); // TO-DO: change expandable
+        }
+
+        return items;
     }
 }

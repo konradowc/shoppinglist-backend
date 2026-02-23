@@ -29,5 +29,5 @@ public class ListModel {
     private List<Long> editor_ids;
 
     @ElementCollection
-    private List<String> contents;
+    private List<ItemModel> contents;
 }
