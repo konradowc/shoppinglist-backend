@@ -16,10 +16,10 @@ public class SseController {
     private final SseService sseService;
     public SseController(SseService sseService) { this.sseService = sseService; }
 
-    @GetMapping("/sse/{listId}/{userId}") // IF-FAIL: produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter initialConnect(@PathVariable("listId") Long listId, @PathVariable("userId") Long userId) {
+    @GetMapping("/sse/{userId}") // IF-FAIL: produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter initialConnect(@PathVariable("userId") Long userId) {
         // TO-DO: when authentication implemented, get userId from that instead
-        SseEmitter emitter = sseService.createNewSseConnection(userId, listId);
+        SseEmitter emitter = sseService.createNewSseConnection(userId);
 
         return emitter;
     }

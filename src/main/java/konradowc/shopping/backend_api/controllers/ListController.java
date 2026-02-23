@@ -30,28 +30,32 @@ public class ListController {
     @PostMapping("/list")
     ResponseEntity<ListResponse> postList(@RequestBody CreateListRequest req) {
         ListResponse list = listService.createList(req);
+        // TO-DO: SSE
+
         return ResponseEntity.ok(list); // TO-DO: ^
     }
 
     @PatchMapping("/list/{id}/contents") 
     ResponseEntity<ListResponse> patchListContents(@PathVariable("id") Long id, @RequestBody UpdateListContentsRequest req) {
-        
-        //TEMP
-        sseService.propogateUpdates(id);
-
         ListResponse list = listService.updateListContents(id, req);
+        sseService.propogateUpdates(list.editor_ids(), id); // TO-DO: good, architecturally?
+
         return ResponseEntity.ok(list); // TO-DO: ^
     }
 
     @PatchMapping("/list/{id}/metadata") 
     ResponseEntity<ListResponse> patchListMetadata(@PathVariable("id") Long id, @RequestBody UpdateListMetadataRequest req) {
         ListResponse list = listService.updateListMetadata(id, req);
+        sseService.propogateUpdates(list.editor_ids(), id); // TO-DO: good, architecturally?
+
         return ResponseEntity.ok(list); // TO-DO: ^
     }
 
     @DeleteMapping("/list/{id}")
     ResponseEntity<Void> deleteList(@PathVariable("id") Long id) {
         listService.deleteList(id);
+        // TO-DO: SSE
+
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
 }
