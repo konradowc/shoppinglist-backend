@@ -8,20 +8,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@Entity
+@Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE) // necessary for builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // necessary for Hibernate
 
-@Embeddable // TO-DO: maybe temporary?
 public class ItemModel {
 
-    /*
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // begins at 1
-    private long id; */
+    private long id;
 
     private String itemName;
 

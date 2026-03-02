@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
 public class SseService {
-    /* mapping lists: {userId : emitter} */   
+    // mapping: {userId : emitter}   
     private final HashMap<Long, SseEmitter> clients = new HashMap<>();
     private final Object clientsListLock = new Object(); // to prevent race conditions (SBoot is multi-threaded)
 
@@ -27,15 +27,18 @@ public class SseService {
 
         return emitter;
     }
+    
+    ///
 
     public void propogateUpdates(List<Long> userIds, Long listIdThatsChanging) {
-
         for(Long userId : userIds) {
-            SseEmitter emitter = clients.get(userId);
+            emitUpdate(clients.get(userId), "changedList", listIdThatsChanging);
+        }
+    }
 
-            String name = "updatedListContents";
-            String data = String.valueOf(listIdThatsChanging);
-            emitUpdate(emitter, name, data);
+    public void propogateDelete(List<Long> userIds, Long listIdThatsDeleting) {
+        for(Long userId : userIds) {
+            emitUpdate(clients.get(userId), "deletedList", listIdThatsDeleting);
         }
     }
 
@@ -53,7 +56,7 @@ public class SseService {
        }
     }
 
-    private void emitUpdate(SseEmitter emitter, String name, String data) {
+    private void emitUpdate(SseEmitter emitter, String name, Object data) { // data can be any type
         executor.submit(() -> {
             try {
                 emitter.send(SseEmitter.event()
