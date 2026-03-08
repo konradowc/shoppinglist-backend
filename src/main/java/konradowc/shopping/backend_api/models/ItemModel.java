@@ -1,5 +1,7 @@
 package konradowc.shopping.backend_api.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,9 @@ public class ItemModel {
 
     private String itemName;
 
-    private boolean expandable;
-    //private String expandableText; // TO-DO
+    private boolean isExpandable;
+    private boolean isExpanded;
+
+    //@OneToMany(cascade = CascadeType.ALL)
+    //private List<ItemModel> expandedItems;
 }

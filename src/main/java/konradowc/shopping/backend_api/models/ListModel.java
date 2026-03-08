@@ -28,6 +28,6 @@ public class ListModel {
     @ElementCollection
     private List<Long> editor_ids;
 
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ItemModel> contents;
 }

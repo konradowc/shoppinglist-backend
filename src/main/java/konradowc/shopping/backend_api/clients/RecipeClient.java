@@ -11,14 +11,16 @@ public class RecipeClient {
     private final RestClient restClient;
     
     @Value("${spoonacular.api_key}")
-    private String apiKey; // TO-DO: not safe?
+    private String apiKey;
 
-    public RecipeClient(RestClient restClient) { this.restClient = restClient; }
+    public RecipeClient(RestClient.Builder restClientBuilder) { 
+        this.restClient = restClientBuilder.baseUrl("https://api.spoonacular.com").build(); 
+    }
 
     public RecipesResponse getRecipeIngredientsFromQuery(String recipeName) {
         RecipesResponse recipes = restClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("https://api.spoonacular.com/recipes/complexSearch")
+                .path("/recipes/complexSearch")
                 .queryParam("query", recipeName)
                 .queryParam("number", 1) // so reduce cost
                 .queryParam("fillIngredients", true) // to get ingredients
