@@ -25,6 +25,8 @@ public class SseService {
         emitter.onTimeout(() -> removeSseConnection(userId));
         emitter.onError((e) -> removeSseConnection(userId));
 
+        emitUpdate(emitter, "initialization", "dummy");
+
         return emitter;
     }
     
@@ -33,6 +35,7 @@ public class SseService {
     public void propogateUpdates(List<Long> userIds, Long listIdThatsChanging) {
         for(Long userId : userIds) {
             emitUpdate(clients.get(userId), "changedList", listIdThatsChanging);
+            System.out.println("emitting: " + userId + " / " + listIdThatsChanging);
         }
     }
 
@@ -47,6 +50,7 @@ public class SseService {
             if(clients.containsKey(userId)) System.out.println("Note: replacing existing emitter");
             
             clients.put(userId, emitter);
+            System.out.println("clients: " + clients);
         }
     }
 
