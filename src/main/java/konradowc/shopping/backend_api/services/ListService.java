@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import konradowc.shopping.backend_api.dtos.List.*;
 import konradowc.shopping.backend_api.models.ItemModel;
 import konradowc.shopping.backend_api.models.ListModel;
@@ -63,9 +64,10 @@ public class ListService {
             List<Boolean> expandable = checkExpandability(items);
 
             List<ItemModel> itemsToAdd = createItemModelsFromStrings(items, expandable);
-            if(!list.getContents().addAll(itemsToAdd)) {
-                System.out.print("fFIAILL!!");
-            }
+
+            // add (remember bidirectionality)
+            list.getContents().addAll(itemsToAdd); // updating in-memory (won't do any database change)
+            for(ItemModel item : itemsToAdd) { item.setList(list); } // setting foreign key
         }
 
         ListModel model = repo.save(list);

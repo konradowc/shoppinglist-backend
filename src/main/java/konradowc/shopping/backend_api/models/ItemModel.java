@@ -2,6 +2,8 @@ package konradowc.shopping.backend_api.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,10 @@ public class ItemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // begins at 1
     private long id;
+
+    @ManyToOne
+    @JsonIgnore
+    private ListModel list; // foreign key to its corresponding list
 
     private String itemName;
 

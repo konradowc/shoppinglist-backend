@@ -22,5 +22,5 @@ public class UserModel {
 
     private String password;
 
-    //public UserModel() { password } TO-DO
+    private String nickname; // not necessarily unique
 }
