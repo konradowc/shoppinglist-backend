@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import konradowc.shopping.backend_api.dtos.List.*;
+import konradowc.shopping.backend_api.dtos.Recipe.RecipesResponse;
 import konradowc.shopping.backend_api.services.ListService;
 import konradowc.shopping.backend_api.services.SseService;
 
@@ -64,4 +65,13 @@ public class ListController {
                                                             // TO-DO: consider user may still be typing (and making PATCHs to a deleted list; consider in error handling)
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
+
+    // recipe stuff
+
+    @GetMapping("/list/{id}/item/{itemId}/expandable-options")
+    ResponseEntity<RecipesResponse> getListItemExpandableOptions(@PathVariable("id") Long id, @PathVariable("itemId") Long itemId) {
+        RecipesResponse recipes = listService.getListItemExpandableOptions(id, itemId);
+
+        return ResponseEntity.ok(recipes); // TO-DO: ^
+    }   
 }

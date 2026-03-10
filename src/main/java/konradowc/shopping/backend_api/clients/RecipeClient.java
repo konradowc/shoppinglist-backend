@@ -17,7 +17,7 @@ public class RecipeClient {
         this.restClient = restClientBuilder.baseUrl("https://api.spoonacular.com").build(); 
     }
 
-    public RecipesResponse getRecipeIngredientsFromQuery(String recipeName) {
+    public RecipesResponse getRecipeOptionsFromQuery(String recipeName) {
         RecipesResponse recipes = restClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/recipes/complexSearch")

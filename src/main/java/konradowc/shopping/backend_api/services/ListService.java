@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import konradowc.shopping.backend_api.dtos.List.*;
+import konradowc.shopping.backend_api.dtos.Recipe.RecipesResponse;
 import konradowc.shopping.backend_api.models.ItemModel;
 import konradowc.shopping.backend_api.models.ListModel;
 import konradowc.shopping.backend_api.repositories.ListRepo;
@@ -19,7 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ListService {
     
     private final ListRepo repo;
-    public ListService(ListRepo repo) { this.repo = repo; }
+    private final RecipeService recipeService;
+    public ListService(ListRepo repo, RecipeService recipeService) { 
+        this.repo = repo; this.recipeService = recipeService; 
+    }
 
     ///
     ///
@@ -100,6 +104,23 @@ public class ListService {
         return new ListofListsResponse(ids);
     }
 
+    // expandable/recipe stuff
+
+    public RecipesResponse getListItemExpandableOptions(long id, long itemid) {
+        ListModel list = getListModelById(id);
+        List<ItemModel> items = list.getContents();
+
+        ItemModel itemToExpand = null;
+        for(ItemModel item : items) { 
+            if(item.getId() == itemid) itemToExpand = item;
+        }
+        if(itemToExpand == null) throw new IllegalArgumentException("Item not found in list");
+
+        // assuming all will be recipe
+        RecipesResponse recipes = recipeService.getRecipesFromQuery(itemToExpand.getItemName());
+        return recipes;
+    }
+
     ///
     /// 
     /// 
@@ -133,7 +154,7 @@ public class ListService {
                                         .itemName(itemName)
                                         .isExpandable(expandable)
                                         .isExpanded(false)
-                                        //.expandedItems(new ArrayList<ItemModel>())
+                                        .expandedItems(new ArrayList<ItemModel>())
                                         .build());
         }
 
