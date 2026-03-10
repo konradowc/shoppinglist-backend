@@ -2,7 +2,7 @@ package konradowc.shopping.backend_api.dtos.Recipe;
 
 import java.util.List;
 
-public record Recipe (
+public record Recipe ( // based off Spoonacular API
 
     Long id,
     List<Ingredient> missedIngredients, // all ingredients, as long as no specific ingredients

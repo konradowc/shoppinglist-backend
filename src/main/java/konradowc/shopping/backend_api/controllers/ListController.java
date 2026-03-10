@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import konradowc.shopping.backend_api.dtos.List.*;
+import konradowc.shopping.backend_api.dtos.Recipe.ChosenRecipeRequest;
+import konradowc.shopping.backend_api.dtos.Recipe.Recipe;
 import konradowc.shopping.backend_api.dtos.Recipe.RecipesResponse;
 import konradowc.shopping.backend_api.services.ListService;
 import konradowc.shopping.backend_api.services.SseService;
@@ -73,5 +75,12 @@ public class ListController {
         RecipesResponse recipes = listService.getListItemExpandableOptions(id, itemId);
 
         return ResponseEntity.ok(recipes); // TO-DO: ^
-    }   
+    }
+
+    @PostMapping("/list/{id}/item/{itemId}/expanded")
+    ResponseEntity<ListResponse> postListItemExpandedItems(@PathVariable("id") Long id, @PathVariable("itemId") Long itemId, @RequestBody ChosenRecipeRequest req) {
+        ListResponse list = listService.createItemListExpandableItems(id, itemId, req);
+
+        return ResponseEntity.ok(list); // TO-DO: ^
+    }
 }

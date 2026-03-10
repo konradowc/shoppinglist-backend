@@ -1,6 +1,6 @@
 package konradowc.shopping.backend_api.dtos.Recipe;
 
-public record Ingredient (
+public record Ingredient ( // based off Spoonacular API
 
     String name,
     //String aisle, // for future maybe?

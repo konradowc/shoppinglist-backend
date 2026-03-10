@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import konradowc.shopping.backend_api.dtos.List.*;
+import konradowc.shopping.backend_api.dtos.Recipe.ChosenRecipeRequest;
+import konradowc.shopping.backend_api.dtos.Recipe.Ingredient;
+import konradowc.shopping.backend_api.dtos.Recipe.Recipe;
 import konradowc.shopping.backend_api.dtos.Recipe.RecipesResponse;
 import konradowc.shopping.backend_api.models.ItemModel;
 import konradowc.shopping.backend_api.models.ListModel;
@@ -43,8 +46,9 @@ public class ListService {
                             .list_name(req.list_name())
                             .owner_id(req.owner_id())
                             .editor_ids(List.of(req.owner_id()))
-                            .contents(createItemModelsFromStrings(req.contents(), expandable)).build();
-
+                            .build();
+        list.setContents(createItemModelsFromStrings(req.contents(), expandable, list)); // do it after so we have the list reference
+        
         ListModel model = repo.save(list);
         return listModelToResponse(model);
     }
@@ -67,11 +71,10 @@ public class ListService {
             List<String> items = req.content_to_add();
             List<Boolean> expandable = checkExpandability(items);
 
-            List<ItemModel> itemsToAdd = createItemModelsFromStrings(items, expandable);
+            List<ItemModel> itemsToAdd = createItemModelsFromStrings(items, expandable, list);
 
-            // add (remember bidirectionality)
+            // add to inverse side (remember bidirectionality) - we already set the foreign key before, so maybe this is optional? or important if we're going to access it from this way
             list.getContents().addAll(itemsToAdd); // updating in-memory (won't do any database change)
-            for(ItemModel item : itemsToAdd) { item.setList(list); } // setting foreign key
         }
 
         ListModel model = repo.save(list);
@@ -104,7 +107,7 @@ public class ListService {
         return new ListofListsResponse(ids);
     }
 
-    // expandable/recipe stuff
+    // expandable/recipe stuff TO-DO: make a separate service + controller?
 
     public RecipesResponse getListItemExpandableOptions(long id, long itemid) {
         ListModel list = getListModelById(id);
@@ -119,6 +122,39 @@ public class ListService {
         // assuming all will be recipe
         RecipesResponse recipes = recipeService.getRecipesFromQuery(itemToExpand.getItemName());
         return recipes;
+    }
+
+    public ListResponse createItemListExpandableItems(long id, long itemId, ChosenRecipeRequest req) { // TO-DO: 'set'? also, Recipe data type? maybe make a wrapper?
+        // TO-DO: in future when storing recipe in separate recipe repo, make sure the whole recipe is stored immediately, not post-user modification? since they might remove things they already have
+        // counterpoint: they might modify it to their liking
+
+        Recipe recipe = req.recipe();
+
+        List<Ingredient> ingredients = recipe.missedIngredients(); // can convert this to stream (.map)
+        List<String> ingredientNames = new ArrayList<>();
+        for(Ingredient i : ingredients) { ingredientNames.add(i.name()); }
+
+        ListModel list = getListModelById(id);
+        ItemModel itemToExpand = null;
+
+        // set itemToChange to whatever
+        List<ItemModel> allItems = list.getContents();
+        for(ItemModel item : allItems) { if(item.getId() == itemId) itemToExpand = item; }
+        if(itemToExpand == null) throw new IllegalArgumentException("Item not found in list (2)");
+
+        List<ItemModel> expandedItems = createItemModelsFromStrings(
+            ingredientNames, 
+            new ArrayList<>(Collections.nCopies(ingredientNames.size(), false)),
+            list
+        );
+        for(ItemModel item : expandedItems) { item.setParentItem(itemToExpand); } // set foreign key
+
+        // need to do this, rather than set, due to Hibernate not liking when replacing the entity it was originally tracking (even if it had nothing)
+        itemToExpand.getExpandedItems().clear();
+        itemToExpand.getExpandedItems().addAll(expandedItems);
+
+        ListModel model = repo.save(list);
+        return listModelToResponse(model);
     }
 
     ///
@@ -144,7 +180,7 @@ public class ListService {
         return new ArrayList<>(Collections.nCopies(itemStrings.size(), true));
     }
 
-    private List<ItemModel> createItemModelsFromStrings(List<String> itemStrings, List<Boolean> expandables) {
+    private List<ItemModel> createItemModelsFromStrings(List<String> itemStrings, List<Boolean> expandables, ListModel associatedList) {
         List<ItemModel> items = new ArrayList<>();
         for(int i = 0; i < itemStrings.size(); i++) {
             String itemName = itemStrings.get(i);
@@ -155,6 +191,7 @@ public class ListService {
                                         .isExpandable(expandable)
                                         .isExpanded(false)
                                         .expandedItems(new ArrayList<ItemModel>())
+                                        .list(associatedList)
                                         .build());
         }
 
