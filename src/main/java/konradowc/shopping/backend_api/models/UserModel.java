@@ -22,5 +22,6 @@ public class UserModel {
 
     private String password;
 
+    @Column(nullable = true)
     private String nickname; // not necessarily unique
 }
