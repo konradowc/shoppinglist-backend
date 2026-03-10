@@ -153,6 +153,9 @@ public class ListService {
         itemToExpand.getExpandedItems().clear();
         itemToExpand.getExpandedItems().addAll(expandedItems);
 
+        // last thing: set the original item's 'expanded' to true, since that is what just happened
+        itemToExpand.setExpanded(true);
+
         ListModel model = repo.save(list);
         return listModelToResponse(model);
     }
