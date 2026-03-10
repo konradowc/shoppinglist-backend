@@ -34,6 +34,12 @@ public class ItemModel {
     private boolean isExpandable;
     private boolean isExpanded;
 
-    //@OneToMany(cascade = CascadeType.ALL)
-    //private List<ItemModel> expandedItems;
+    // expandedItems fields
+
+    @OneToMany(mappedBy = "parentItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemModel> expandedItems;
+
+    @ManyToOne(optional = true)
+    @JsonIgnore
+    private ItemModel parentItem; // can be null if has no parent
 }

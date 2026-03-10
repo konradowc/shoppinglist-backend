@@ -54,7 +54,7 @@ public class ListService {
         // remove given ids
         if(req.item_ids_to_remove() != null) {
             for(Long itemId : req.item_ids_to_remove()) {
-                repo.deleteById(itemId);
+                list.getContents().removeIf(item -> (item.getId() == itemId)); // TO-DO: can replace in future with more efficient
             }
         }
 
@@ -89,6 +89,7 @@ public class ListService {
         return listModelToResponse(model);
     }
 
+    @Transactional
     public long deleteList(long id) {
         repo.deleteById(id);
         return id; // return something else?

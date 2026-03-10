@@ -1,5 +1,7 @@
 package konradowc.shopping.backend_api.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,11 +56,11 @@ public class ListController {
 
     @DeleteMapping("/list/{id}")
     ResponseEntity<Void> deleteList(@PathVariable("id") Long id) {
-        ListResponse list = listService.getList(id);
+        List<Long> listEditors = listService.getList(id).editor_ids(); // need to get editors *before* deletion
 
-        listService.deleteList(id);
+        listService.deleteList(id); // TO-DO: throws lazy-loading exception - but it works? and it doesn't throw it when this line is commented out?
 
-        sseService.propogateDelete(list.editor_ids(), id); // TO-DO: potential edge case: editor added exactly right after someone deletes - won't propogate to them
+        sseService.propogateDelete(listEditors, id); // TO-DO: potential edge case: editor added exactly right after someone deletes - won't propogate to them
                                                             // TO-DO: consider user may still be typing (and making PATCHs to a deleted list; consider in error handling)
         return ResponseEntity.ok().build(); // TO-DO: ^
     }
