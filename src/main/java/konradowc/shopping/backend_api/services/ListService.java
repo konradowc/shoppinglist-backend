@@ -47,7 +47,7 @@ public class ListService {
                             .owner_id(req.owner_id())
                             .editor_ids(List.of(req.owner_id()))
                             .build();
-        list.setContents(createItemModelsFromStrings(req.contents(), expandable, list)); // do it after so we have the list reference
+        list.setContents(createItemModelsFromStrings(req.contents(), expandable, list, false)); // do it after so we have the list reference
         
         ListModel model = repo.save(list);
         return listModelToResponse(model);
@@ -71,7 +71,7 @@ public class ListService {
             List<String> items = req.content_to_add();
             List<Boolean> expandable = checkExpandability(items);
 
-            List<ItemModel> itemsToAdd = createItemModelsFromStrings(items, expandable, list);
+            List<ItemModel> itemsToAdd = createItemModelsFromStrings(items, expandable, list, false);
 
             // add to inverse side (remember bidirectionality) - we already set the foreign key before, so maybe this is optional? or important if we're going to access it from this way
             list.getContents().addAll(itemsToAdd); // updating in-memory (won't do any database change)
@@ -145,7 +145,8 @@ public class ListService {
         List<ItemModel> expandedItems = createItemModelsFromStrings(
             ingredientNames, 
             new ArrayList<>(Collections.nCopies(ingredientNames.size(), false)),
-            list
+            list,
+            true
         );
         for(ItemModel item : expandedItems) { item.setParentItem(itemToExpand); } // set foreign key
 
@@ -183,7 +184,7 @@ public class ListService {
         return new ArrayList<>(Collections.nCopies(itemStrings.size(), true));
     }
 
-    private List<ItemModel> createItemModelsFromStrings(List<String> itemStrings, List<Boolean> expandables, ListModel associatedList) {
+    private List<ItemModel> createItemModelsFromStrings(List<String> itemStrings, List<Boolean> expandables, ListModel associatedList, boolean areItemChildren) {
         List<ItemModel> items = new ArrayList<>();
         for(int i = 0; i < itemStrings.size(); i++) {
             String itemName = itemStrings.get(i);
@@ -195,6 +196,7 @@ public class ListService {
                                         .isExpanded(false)
                                         .expandedItems(new ArrayList<ItemModel>())
                                         .list(associatedList)
+                                        .isAnItemChild(areItemChildren)
                                         .build());
         }
 

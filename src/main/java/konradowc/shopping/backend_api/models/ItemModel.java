@@ -42,4 +42,5 @@ public class ItemModel {
     @ManyToOne(optional = true)
     @JsonIgnore
     private ItemModel parentItem; // can be null if has no parent
+    private boolean isAnItemChild;
 }
