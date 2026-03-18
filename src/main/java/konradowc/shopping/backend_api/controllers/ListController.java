@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import konradowc.shopping.backend_api.dtos.List.*;
 import konradowc.shopping.backend_api.dtos.Recipe.ChosenRecipeRequest;
-import konradowc.shopping.backend_api.dtos.Recipe.Recipe;
 import konradowc.shopping.backend_api.dtos.Recipe.RecipesResponse;
 import konradowc.shopping.backend_api.services.ListService;
 import konradowc.shopping.backend_api.services.SseService;
@@ -35,7 +34,6 @@ public class ListController {
     @PostMapping("/list")
     ResponseEntity<ListResponse> postList(@RequestBody CreateListRequest req) {
         ListResponse list = listService.createList(req);
-        // no SSE, since if editors are to be added, that will be propogated with patchListMetadata
 
         return ResponseEntity.ok(list); // TO-DO: ^
     }
@@ -43,7 +41,7 @@ public class ListController {
     @PatchMapping("/list/{id}/contents") 
     ResponseEntity<ListResponse> patchListContents(@PathVariable("id") Long id, @RequestBody UpdateListContentsRequest req) {
         ListResponse list = listService.updateListContents(id, req);
-        sseService.propogateUpdates(list.editor_ids(), id); // TO-DO: good, architecturally? 
+        sseService.propogateUpdates(list.editor_ids(), id);
 
         return ResponseEntity.ok(list); // TO-DO: ^
     }
