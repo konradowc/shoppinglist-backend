@@ -9,7 +9,7 @@ import konradowc.shopping.backend_api.services.UserService;
 import konradowc.shopping.backend_api.services.ListService;
 
 
-@CrossOrigin(origins = "http://localhost:5173",  // TO-DO: temporary
+@CrossOrigin(origins = "http://localhost:5173",
     methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH})
 @RestController
 public class UserController {
@@ -27,13 +27,13 @@ public class UserController {
     @PostMapping("/user")
     ResponseEntity<UserResponse> postUser(@RequestBody CreateUserRequest req) {
         UserResponse user = userService.createUser(req);
-        return ResponseEntity.ok(user); // TO-DO: ^
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/user/{id}")
     ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok().build(); // TO-DO: ^
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/user/{userId}/lists")

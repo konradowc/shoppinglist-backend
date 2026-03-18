@@ -9,14 +9,14 @@ import konradowc.shopping.backend_api.services.SseService;
 
 import org.springframework.stereotype.Controller;
 
-@CrossOrigin(origins = "http://localhost:5173")  // TO-DO: temporary?
+@CrossOrigin(origins = "http://localhost:5173")
 @Controller
 public class SseController {
 
     private final SseService sseService;
     public SseController(SseService sseService) { this.sseService = sseService; }
 
-    @GetMapping("/sse/{userId}") // IF-FAIL: produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping("/sse/{userId}")
     public SseEmitter initialConnect(@PathVariable("userId") Long userId) {
         // TO-DO: when authentication implemented, get userId from that instead
         SseEmitter emitter = sseService.createNewSseConnection(userId);
