@@ -1,7 +1,7 @@
 # SLOShoppr (backend)
 
 A simple, convenient, and easy-to-use grocery list web application.<br/>
-For current features, and more, visit the [frontend](https://github.com/konradowc/shoppinglist-backend/blob/main/README.md#frontend)<br/>
+For current features, and more, visit the [frontend](https://github.com/konradowc/shoppinglist-backend?tab=readme-ov-file#frontend)<br/>
 
 ## Set-up instructions
 
@@ -15,9 +15,9 @@ For current features, and more, visit the [frontend](https://github.com/konradow
 **Starting the application**<br/>
 1) Run './gradlew bootRun'<br/>
 
-**Frontend**
+**Frontend setup**
 
-1) Follow the [frontend](https://github.com/konradowc/shoppinglist-backend/blob/main/README.md#frontend) instructions<br/>
+1) Follow the [frontend](https://github.com/konradowc/shoppinglist-backend?tab=readme-ov-file#frontend) instructions<br/>
 
 ## Frontend
 
