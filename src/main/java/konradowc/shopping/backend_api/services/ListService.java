@@ -62,7 +62,7 @@ public class ListService {
         // remove given ids
         if(req.item_ids_to_remove() != null) {
             for(Long itemId : req.item_ids_to_remove()) {
-                list.getContents().removeIf(item -> (item.getId() == itemId)); // TO-DO: can replace in future with more efficient
+                list.getContents().removeIf(item -> (item.getId() == itemId));
             }
         }
 
@@ -107,7 +107,7 @@ public class ListService {
         return new ListofListsResponse(ids);
     }
 
-    // expandable/recipe stuff TO-DO: make a separate service + controller?
+    // expandable/recipe stuff
 
     public RecipesResponse getListItemExpandableOptions(long id, long itemid) {
         ListModel list = getListModelById(id);
@@ -124,13 +124,11 @@ public class ListService {
         return recipes;
     }
 
-    public ListResponse createItemListExpandableItems(long id, long itemId, ChosenRecipeRequest req) { // TO-DO: 'set'? also, Recipe data type? maybe make a wrapper?
-        // TO-DO: in future when storing recipe in separate recipe repo, make sure the whole recipe is stored immediately, not post-user modification? since they might remove things they already have
-        // counterpoint: they might modify it to their liking
+    public ListResponse createItemListExpandableItems(long id, long itemId, ChosenRecipeRequest req) {
 
         Recipe recipe = req.recipe();
 
-        List<Ingredient> ingredients = recipe.missedIngredients(); // can convert this to stream (.map)
+        List<Ingredient> ingredients = recipe.missedIngredients();
         List<String> ingredientNames = new ArrayList<>();
         for(Ingredient i : ingredients) { ingredientNames.add(i.name()); }
 
