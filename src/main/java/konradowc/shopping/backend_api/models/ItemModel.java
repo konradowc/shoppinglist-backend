@@ -16,9 +16,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PACKAGE) // necessary for builder
+@AllArgsConstructor(access = AccessLevel.PUBLIC) // necessary for builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // necessary for Hibernate
-
 public class ItemModel {
 
     @Id
