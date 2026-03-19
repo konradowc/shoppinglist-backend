@@ -201,16 +201,17 @@ public class ListServiceTest {
 
         assertThrows(IllegalArgumentException.class, () -> listService.getListItemExpandableOptions(1L, itemId));
     } 
-/* 
+
     @Test
     void should_createItemListExpandableItems() {
         when(repo.findById(1L)).thenReturn(Optional.of(list));
         long itemId = 1L;
+        whenRepoSave();
         ChosenRecipeRequest req = new ChosenRecipeRequest(new Recipe(1L, new ArrayList<>(), "A Sample Item Recipe", "null", "png"));
 
         ListResponse response = listService.createItemListExpandableItems(1L, itemId, req);
 
         assertEquals(response.contents().stream().filter(item -> item.getId() == itemId).findFirst().orElse(null).isExpanded(), true);
-    } */
+    } 
 
 }
